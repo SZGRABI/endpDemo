@@ -2,12 +2,9 @@ package hu.practice.enpdemo.services;
 
 import hu.practice.enpdemo.controllers.CalcController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.math.BigDecimal;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 /**
  * Created by SZGRABI on 2020.04.13..
@@ -29,4 +26,9 @@ public class CalcServices {
         return calcController.mul(a, b);
     }
 
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<String> handleWrongArguments(MethodArgumentTypeMismatchException e) {
+        return ResponseEntity.notFound().header("Error", e.getErrorCode()).build();
+    }
 }
